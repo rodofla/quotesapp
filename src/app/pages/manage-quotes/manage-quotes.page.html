@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Gestión de citas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- Formulario para nueva cita -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Crea una nueva cita</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-label position="stacked">Cita</ion-label>
+        <ion-input
+          type="text"
+          [(ngModel)]="newQuote.text"
+          placeholder="Escribe la cita">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="stacked">Autor</ion-label>
+        <ion-input type="text" [(ngModel)]="newQuote.author" placeholder="Nombre del autor"></ion-input>
+      </ion-item>
+      <ion-button expand="block" color="primary" (click)="addQuote()">
+        <ion-icon slot="start" name="add"></ion-icon>
+        Agregar
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Lista de citas -->
+  <ion-list>
+    <app-quote-item
+      *ngFor="let quote of quotes; let i = index"
+      [quote]="quote"
+      [allowDeletion]="allowDeletion"
+      (delete)="removeQuote(i)"
+    ></app-quote-item>
+  </ion-list>
+</ion-content>
+
+
+

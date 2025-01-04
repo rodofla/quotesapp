@@ -1,0 +1,7 @@
+<ion-item>
+  <ion-label>
+    <h2>{{ quote.text }}</h2>
+    <p>{{ quote.author }}</p>
+  </ion-label>
+  <ion-icon slot="end" name="trash" color="danger" (click)="deleteQuote()" class="hoverable"></ion-icon>
+</ion-item>

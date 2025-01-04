@@ -1,0 +1,8 @@
+.hoverable {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.hoverable:hover {
+  transform: scale(1.2);
+  color: var(--ion-color-primary);
+}

@@ -1,0 +1,41 @@
+ion-card {
+  margin: 16px;
+  --background: #4d4949;
+}
+
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #4a4a4a;
+}
+
+ion-item {
+  margin-bottom: 12px;
+  --background: #8a8a8a;
+  border-radius: 8px;
+}
+
+ion-button {
+  margin-top: 16px;
+}
+
+.quote-container {
+  margin: 16px;
+  padding: 16px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.quote-text {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.quote-author {
+  font-size: 1rem;
+  text-align: right;
+  color: #555;
+  margin-top: 8px;
+}
+
