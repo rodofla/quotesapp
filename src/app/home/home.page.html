@@ -1,22 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Quote</ion-title>
+    <ion-title class="ion-title">Citas</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="navigateToSettings()">
+      <ion-button [routerLink]="['/settings']">
         <ion-icon slot="icon-only" name="settings"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding ion-text-center ion-text-wrap">
   <div class="quote-container">
-    <p class="quote-text">"{{ randomQuote.text }}"</p>
+    <p class="quote-text">"{{ randomQuote.quote }}"</p>
     <p class="quote-author">- {{ randomQuote.author }}</p>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="primary" (click)="navigateToManageQuotes()">
+    <ion-fab-button color="primary" [routerLink]="['/manage-quotes']">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

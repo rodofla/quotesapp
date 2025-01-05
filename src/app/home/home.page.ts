@@ -1,27 +1,59 @@
-import { Component} from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonFabButton, IonFab, IonButtons } from '@ionic/angular/standalone';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton,
+  IonIcon,
+  IonFabButton,
+  IonFab,
+  IonButtons,
+} from '@ionic/angular/standalone';
 import { settings, add } from 'ionicons/icons';
-import {addIcons} from "ionicons";
+import { RouterModule } from '@angular/router';
+import { QuotesService } from '@services/quotes.service';
+import { addIcons } from 'ionicons';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonFabButton, IonFab, IonButtons],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonButton,
+    IonIcon,
+    IonFabButton,
+    IonFab,
+    IonButtons,
+    RouterModule,
+  ],
+  standalone: true,
 })
-export class HomePage {
-  randomQuote = { text: 'The only limit to our realization of tomorrow is our doubts of today.', author: 'Franklin D. Roosevelt' };
+export class HomePage implements OnInit {
+  randomQuote = { quote: '', author: '' };
 
-  constructor(private router: Router) {
-    addIcons({ settings, add });
-  }
+  constructor(private quotesService: QuotesService) {
+      addIcons({settings,add});}
 
-  navigateToManageQuotes() {
-    this.router.navigate(['/manage-quotes']);
-  }
+      async ngOnInit() {
+        try {
+          await this.loadRandomQuote();
+        } catch (error) {
+          console.error('Error during initialization:', error);
+        }
+      }
 
-  navigateToSettings() {
-    this.router.navigate(['/settings']);
+  async loadRandomQuote() {
+    const quote = await this.quotesService.getRandomQuote();
+    if (quote) {
+      this.randomQuote = quote;
+    } else {
+      console.warn('No se pudo cargar una cita.');
+    }
   }
 }
+

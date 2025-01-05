@@ -1,40 +1,123 @@
 import { Component } from '@angular/core';
 import { QuotesService } from '@services/quotes.service';
+import { SettingsService } from '@services/settings.service';
 import { QuoteItemComponent } from '@components/quote-item/quote-item.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonHeader, IonButtons, IonToolbar, IonBackButton, IonTitle, IonContent, IonCardHeader, IonCard, IonCardTitle, IonCardContent, IonItem, IonLabel, IonButton, IonIcon, IonList, IonInput } from "@ionic/angular/standalone";
+import {
+  IonHeader,
+  IonButtons,
+  IonToolbar,
+  IonBackButton,
+  IonTitle,
+  IonContent,
+  IonCardHeader,
+  IonCard,
+  IonCardTitle,
+  IonCardContent,
+  IonItem,
+  IonLabel,
+  IonButton,
+  IonIcon,
+  IonList,
+  IonInput,
+  IonText,
+} from "@ionic/angular/standalone";
 import { Router } from '@angular/router';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-quotes',
   templateUrl: './manage-quotes.page.html',
   styleUrls: ['./manage-quotes.page.scss'],
-  imports: [IonCardHeader, IonBackButton, IonButtons, IonHeader, CommonModule, FormsModule, QuoteItemComponent, IonToolbar, IonTitle, IonContent, IonCard, IonCardTitle, IonCardContent, IonItem, IonLabel, IonButton, IonIcon, IonList, IonInput],
+  imports: [
+    IonCardHeader,
+    IonBackButton,
+    IonButtons,
+    IonHeader,
+    CommonModule,
+    FormsModule,
+    QuoteItemComponent,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonCard,
+    IonCardTitle,
+    IonCardContent,
+    IonItem,
+    IonLabel,
+    IonButton,
+    IonIcon,
+    IonList,
+    IonInput,
+    IonText,
+  ],
   standalone: true,
 })
 export class ManageQuotesPage {
-  quotes = this.quotesService.getQuotes();
-  newQuote = { text: '', author: '' };
+  quotes: any[] = [];
+  newQuote = { quote: '', author: '' };
   allowDeletion = true;
+  isLoading = true;
+  formSubmitted = false;
 
-  constructor(private quotesService: QuotesService, private router: Router) {
-    const state = this.router.getCurrentNavigation()?.extras.state;
-    this.allowDeletion = state?.['allowDeletion'] ?? true;
-  }
+  constructor(private quotesService: QuotesService, private settingsService: SettingsService,  private router: Router) {}
 
-  addQuote() {
-    if (this.newQuote.text && this.newQuote.author) {
-      this.quotesService.addQuote(this.newQuote.text, this.newQuote.author);
-      this.newQuote = { text: '', author: '' }; // Clear input fields
-      this.quotes = this.quotesService.getQuotes();
+  async ngOnInit() {
+    try {
+      await this.loadAllowDeletion();
+      await this.loadQuotes();
+    } finally {
+      this.isLoading = false;
     }
   }
 
-  removeQuote(index: number) {
+  async loadAllowDeletion() {
+    try {
+      const settings = await this.settingsService.getSettings();
+      this.allowDeletion = settings[0]?.allowDeletion === 1;
+      console.log('allowDeletion:', this.allowDeletion);
+    } catch (error) {
+      console.error('Error loading settings:', error);
+      this.allowDeletion = true;
+    }
+  }
+
+  async loadQuotes() {
+    try {
+      this.quotes = await this.quotesService.getQuotes();
+    } catch (error) {
+      console.error('Error loading quotes:', error);
+    }
+  }
+
+  async addQuote(quoteInput: NgModel, authorInput: NgModel) {
+    this.formSubmitted = true;
+
+    if (!quoteInput.valid || !authorInput.valid) {
+      return;
+    }
+
+    try {
+      await this.quotesService.addQuote(this.newQuote.quote, this.newQuote.author);
+      this.newQuote = { quote: '', author: '' };
+      this.formSubmitted = false;
+      quoteInput.reset();
+      authorInput.reset();
+      await this.loadQuotes();
+    } catch (error) {
+      console.error('Error adding quote:', error);
+    }
+  }
+
+  async removeQuote(index: number) {
     if (this.allowDeletion) {
-      this.quotesService.removeQuote(index);
-      this.quotes = this.quotesService.getQuotes();
+      try {
+        await this.quotesService.removeQuote(index);
+        await this.loadQuotes();
+      } catch (error) {
+        console.error('Error removing quote:', error);
+      }
     }
   }
 }

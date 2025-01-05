@@ -13,20 +13,47 @@
     <ion-card-header>
       <ion-card-title>Crea una nueva cita</ion-card-title>
     </ion-card-header>
-    <ion-card-content>
+    <ion-card-content inline="none">
+      <!-- Campo para la cita -->
       <ion-item>
         <ion-label position="stacked">Cita</ion-label>
         <ion-input
           type="text"
-          [(ngModel)]="newQuote.text"
-          placeholder="Escribe la cita">
+          [(ngModel)]="newQuote.quote"
+          placeholder="Escribe la cita"
+          required
+          minlength="5"
+          #quoteInput="ngModel">
         </ion-input>
+        <ion-text color="danger" *ngIf="formSubmitted && quoteInput.invalid">
+          <p *ngIf="quoteInput.errors?.['required']">La cita es requerida</p>
+          <p *ngIf="quoteInput.errors?.['minlength']">La cita debe tener al menos 5 caracteres</p>
+        </ion-text>
       </ion-item>
+
+      <!-- Campo para el autor -->
       <ion-item>
         <ion-label position="stacked">Autor</ion-label>
-        <ion-input type="text" [(ngModel)]="newQuote.author" placeholder="Nombre del autor"></ion-input>
+        <ion-input
+          type="text"
+          [(ngModel)]="newQuote.author"
+          placeholder="Nombre del autor"
+          required
+          minlength="2"
+          #authorInput="ngModel">
+        </ion-input>
+        <ion-text color="danger" *ngIf="formSubmitted && authorInput.invalid">
+          <p *ngIf="authorInput.errors?.['required']">El autor es requerido</p>
+          <p *ngIf="authorInput.errors?.['minlength']">El autor debe tener al menos 2 caracteres</p>
+        </ion-text>
       </ion-item>
-      <ion-button expand="block" color="primary" (click)="addQuote()">
+
+      <!-- Botón Agregar -->
+      <ion-button
+        expand="block"
+        color="primary"
+        type="button"
+        (click)="addQuote(quoteInput, authorInput)">
         <ion-icon slot="start" name="add"></ion-icon>
         Agregar
       </ion-button>
@@ -39,10 +66,11 @@
       *ngFor="let quote of quotes; let i = index"
       [quote]="quote"
       [allowDeletion]="allowDeletion"
-      (delete)="removeQuote(i)"
-    ></app-quote-item>
+      (delete)="removeQuote(quote.id)">
+    </app-quote-item>
   </ion-list>
 </ion-content>
+
 
 
 
