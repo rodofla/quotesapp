@@ -10,7 +10,7 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-    canActivate: [databaseInitGuard], // Aplicar el guard aquí
+    canActivate: [databaseInitGuard],
   },
   {
     path: 'manage-quotes',
