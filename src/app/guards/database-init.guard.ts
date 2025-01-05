@@ -10,11 +10,10 @@ export const databaseInitGuard: CanActivateFn = async () => {
   try {
     console.log('Inicializando la base de datos...');
 
-    // Inicializar las bases de datos
     await quotesService.initializeDatabase();
     await settingsService.initializeDatabase();
 
-    // Verificar y agregar cita predeterminada si es necesario
+
     const quotes = await quotesService.getQuotes();
     if (quotes.length === 0) {
       await quotesService.addQuote(
@@ -24,9 +23,9 @@ export const databaseInitGuard: CanActivateFn = async () => {
     }
 
     console.log('Base de datos inicializada correctamente.');
-    return true; // Permitir acceso
+    return true;
   } catch (error) {
     console.error('Error inicializando la base de datos:', error);
-    return false; // Bloquear acceso si algo falla
+    return false;
   }
 };

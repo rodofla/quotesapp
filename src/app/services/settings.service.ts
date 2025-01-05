@@ -46,7 +46,7 @@ export class SettingsService {
       const result = await this.dbHelper.fetchAll(query);
 
       if (result.length === 0) {
-        return [{ id: 1, allowDeletion: 1 }]; // Predeterminado: true
+        return [{ id: 1, allowDeletion: 1 }];
       }
 
       return result;

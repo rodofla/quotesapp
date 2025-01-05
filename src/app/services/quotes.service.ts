@@ -25,7 +25,6 @@ export class QuotesService {
 
   async initializeDatabase() {
     try {
-      // Inicializa la base de datos con la tabla "quotes"
       await this.dbHelper.initializeDatabase(
         this.dbName,
         1,
