@@ -8,8 +8,6 @@ export const databaseInitGuard: CanActivateFn = async () => {
   const settingsService = inject(SettingsService);
 
   try {
-    console.log('Inicializando la base de datos...');
-
     await quotesService.initializeDatabase();
     await settingsService.initializeDatabase();
 
@@ -22,7 +20,6 @@ export const databaseInitGuard: CanActivateFn = async () => {
       );
     }
 
-    console.log('Base de datos inicializada correctamente.');
     return true;
   } catch (error) {
     console.error('Error inicializando la base de datos:', error);

@@ -33,7 +33,6 @@ export class QuotesService {
         false,
         this.tableSQL
       );
-      console.log('Base de datos inicializada para quotes.');
     } catch (error) {
       console.error('Error inicializando la base de datos de quotes:', error);
     }
@@ -55,7 +54,6 @@ export class QuotesService {
     const query = `DELETE FROM quotes WHERE id = ?`;
     try {
       await this.dbHelper.executeQuery(query, [index]);
-      console.log(`Quote con ID ${index} eliminada exitosamente.`);
     } catch (error) {
       console.error(`Error al eliminar la quote con ID ${index}:`, error);
     }

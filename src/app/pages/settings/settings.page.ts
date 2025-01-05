@@ -40,13 +40,9 @@ export class SettingsPage implements OnInit {
   async ngOnInit() {
     try {
       const settings = await this.settingsService.getSettings();
-      console.log('Config settings:', settings);
 
-      // Usar el valor de la base de datos si existe
       if (settings.length > 0) {
         this.allowDeletion = !!settings[0].allowDeletion; // Convertir a booleano
-      } else {
-        console.warn('No se encontró configuración en la base de datos. Usando valor predeterminado.');
       }
     } catch (error) {
       console.error('Error al cargar la configuración inicial:', error);
@@ -55,9 +51,7 @@ export class SettingsPage implements OnInit {
 
   async toggleAllowDeletion() {
     try {
-      console.log('este es el valor:', this.allowDeletion);
       await this.settingsService.updateAllowDeletion(this.allowDeletion);
-      console.log('Configuración actualizada:', this.allowDeletion);
     } catch (error) {
       console.error('Error al actualizar la configuración:', error);
     }

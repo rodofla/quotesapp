@@ -76,7 +76,6 @@ export class ManageQuotesPage {
     try {
       const settings = await this.settingsService.getSettings();
       this.allowDeletion = settings[0]?.allowDeletion === 1;
-      console.log('allowDeletion:', this.allowDeletion);
     } catch (error) {
       console.error('Error loading settings:', error);
       this.allowDeletion = true;
