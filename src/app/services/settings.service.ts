@@ -6,7 +6,7 @@ import { SQLiteHelper } from '../database/sqlite.helper';
 })
 export class SettingsService {
   private dbHelper: SQLiteHelper;
-  private dbName: string = 'quotes.db'; // Misma base de datos que Quotes
+  private dbName: string = 'quotes.db';
   private tableSQL: string = `
     CREATE TABLE IF NOT EXISTS settings (
       id INTEGER PRIMARY KEY NOT NULL,
@@ -55,6 +55,4 @@ export class SettingsService {
       return [{ id: 1, allowDeletion: 1 }];
     }
   }
-
-
 }
